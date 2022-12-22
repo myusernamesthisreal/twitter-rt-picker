@@ -14,14 +14,14 @@ export default async function handler(req, res) {
             let allUsers = [];
             let pageToken = undefined;
             do {
-                const { data, meta } = await client.tweetRetweetedBy(tweetId, { max_results: 100, pagination_token: pageToken });
+                const { data, meta } = await client.tweetRetweetedBy(tweetId, { max_results: 100, pagination_token: pageToken, "user.fields": "id,name,username,profile_image_url" });
                 // console.log(data);
                 if (data)
                     allUsers = allUsers.concat(data);
                 pageToken = meta?.next_token;
             } while (typeof pageToken === "string");
             // console.log(allUsers, allUsers.length);
-            res.status(200).json(allUsers);
+            res.status(200).json({ allUsers });
         }
         catch (e) {
             console.error(e);
