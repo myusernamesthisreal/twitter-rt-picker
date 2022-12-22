@@ -75,7 +75,7 @@ export default function Home() {
             <div className='d-flex'>
               <Image src={winner.profile_image_url} alt={winner.name} className='rounded-circle' width='100' height='100' />
               <div className='mx-3'>
-                <h3 className='text-white'>{winner.name}</h3>
+                <a href={`https://twitter.com/${winner.username}`} target="_blank" rel="noreferrer" className="text-reset"><h3 className='text-white'>{winner.name}</h3></a>
                 <h4 className='text-white-50'>@{winner.username}</h4>
               </div>
             </div>
