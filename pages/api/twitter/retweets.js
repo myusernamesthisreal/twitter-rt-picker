@@ -15,11 +15,12 @@ export default async function handler(req, res) {
             let pageToken = undefined;
             do {
                 const { data, meta } = await client.tweetRetweetedBy(tweetId, { max_results: 100, pagination_token: pageToken });
-                if (data !== null)
+                // console.log(data);
+                if (data)
                     allUsers = allUsers.concat(data);
                 pageToken = meta?.next_token;
             } while (typeof pageToken === "string");
-            console.log(allUsers, allUsers.length);
+            // console.log(allUsers, allUsers.length);
             res.status(200).json(allUsers);
         }
         catch (e) {

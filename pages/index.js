@@ -1,10 +1,29 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
-
+import { Button, Form, Spinner } from 'react-bootstrap'
+import { useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+
+  const [tweetId, setTweetId] = useState('');
+  const [buttonClicked, setButtonClicked] = useState(false);
+
+  const pickWinner = async () => {
+    setButtonClicked(true);
+    const response = await fetch('/api/twitter/retweets', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ tweetId })
+    });
+    const data = await response.json();
+    console.log(data);
+    setButtonClicked(false);
+  }
+
   return (
     <>
       <Head>
@@ -14,7 +33,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main >
-        Hello world
+        <div className='mx-auto w-100 text-center bg-primary'>
+          <h1 className='text-white p-5'>Twitter RT picker v1</h1>
+        </div>
+        <Form className='mx-auto px-5 mt-5 container-md'>
+          <Form.Group className='mb-3' controlId='tweetId'>
+            <Form.Label>Tweet ID</Form.Label>
+            <Form.Control type='text' placeholder='Enter tweet ID' value={tweetId} onChange={(e) => { setTweetId(e.target.value) }} />
+          </Form.Group>
+          <Button variant='primary' onClick={pickWinner}>Pick a winner!</Button>
+        </Form>
+        {buttonClicked && <div className='mx-auto w-100 text-center mt-5'>
+          <Spinner animation='border' variant='primary'/>
+        </div>}
       </main>
     </>
   )
